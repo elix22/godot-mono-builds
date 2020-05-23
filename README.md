@@ -1,4 +1,7 @@
 # Mono build scripts for Godot
+
+[![Build](https://github.com/godotengine/godot-mono-builds/workflows/Build/badge.svg)](https://github.com/godotengine/godot-mono-builds/actions)
+
 This repository contains scripts for building the Mono runtime to use with Godot Engine
 
 ## Command-line options
@@ -31,12 +34,12 @@ export MONO_SOURCE_ROOT=$HOME/git/mono
 
 ```bash
 # Build the runtimes for 32-bit and 64-bit Linux.
-./linux.py configure --target=i686 --target=x86_64
-./linux.py make --target=i686 --target=x86_64
+./linux.py configure --target=x86 --target=x86_64
+./linux.py make --target=x86 --target=x86_64
 
 # Build the runtimes for 32-bit and 64-bit Windows.
-./windows.py configure --target=i686 --target=x86_64 --mxe-prefix=/usr
-./windows.py make --target=i686 --target=x86_64 --mxe-prefix=/usr
+./windows.py configure --target=x86 --target=x86_64 --mxe-prefix=/usr
+./windows.py make --target=x86 --target=x86_64 --mxe-prefix=/usr
 
 # Build the runtime for 64-bit macOS.
 ./osx.py configure --target=x86_64
@@ -119,6 +122,8 @@ _AOT cross-compilers for WebAssembly cannot be built with this script yet._
 # Build the WebAssembly BCL.
 ./bcl.py make --product=wasm
 ```
+
+**NOTE:** Building the Desktop BCL for the current system is required first to be able to build the Desktop BCL for Windows.
 
 ## Reference Assemblies
 
