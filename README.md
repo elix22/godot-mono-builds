@@ -2,7 +2,16 @@
 
 [![Build](https://github.com/godotengine/godot-mono-builds/workflows/Build/badge.svg)](https://github.com/godotengine/godot-mono-builds/actions)
 
-This repository contains scripts for building the Mono runtime to use with Godot Engine
+This repository contains scripts for building the Mono runtime to use with Godot Engine.
+
+## Supported versions
+
+The scripts are tested against specific versions of the toolchains used by Godot.
+While they may work with other versions, you might have issues applying patches or compiling, so we recommend using the versions below.
+
+- Mono: 6.12.0.111.
+- Emscripten: 1.39.9.
+- Android: API level 29.
 
 ## Command-line options
 
@@ -10,9 +19,9 @@ This repository contains scripts for building the Mono runtime to use with Godot
 
 These scripts are based on the Mono [sdks](https://github.com/mono/mono/tree/master/sdks) makefiles, with some changes to work well with Godot. Some platforms or targets depend on files from the `sdks` directory in the Mono source repository. This directory may be missing from tarballs. If that's the case, cloning the git repository may be needed. [This table](https://www.mono-project.com/docs/about-mono/versioning/#mono-source-versioning) can be used to determine the branch for a specific version of Mono.
 
-Some patches need to be applied to the Mono sources before building. This can be done by running `python ./patch_mono.py`.
+Some patches need to be applied to the Mono sources before building. This can be done by running `python3 ./patch_mono.py`.
 
-Run `python SCRIPT.py --help` for the full list of command line options.
+Run `python3 SCRIPT.py --help` for the full list of command line options.
 
 By default, the scripts will install the resulting files to `$HOME/mono-installs`.
 A custom output directory can be specified with the `--install-dir` option.
@@ -29,6 +38,19 @@ export MONO_SOURCE_ROOT=$HOME/git/mono
 - Python 3.7 or higher is required.
 - OSXCROSS is supported expect for building the Mono cross-compilers.
 - Building on Windows is not supported. It's possible to use Cygwin or WSL (Windows Subsystem for Linux) but this hasn't been tested.
+
+## Compiling Godot for Desktop with this Runtime
+
+In order to compile mono into Godot for deskop you will need to first build for desktop (see 'Desktop' below), and then Base Class Libraries (see 'Base Class library' below).
+
+Then run the 'copy-bcl' action of the same desktop script you ran configure and make on, specifying the same target platforms you used before. This will copy the bcl runtime into the runtime directories that the subsequent Godot build (using `copy_mono_root=yes`) expects to find them in.
+e.g.
+`./linux.py copy-bcl --target=x86 --target=x86_64`
+
+Then you'll need to compile Godot using `copy_mono_root=yes`
+e.g.
+`scons -j6 target=release_debug tools=yes module_mono_enabled=yes copy_mono_root=yes mono_prefix="$HOME/mono-installs/desktop-linux-x86_64-release"`
+
 
 ## Desktop
 

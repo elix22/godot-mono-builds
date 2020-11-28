@@ -1,5 +1,4 @@
-#!/usr/bin/python
-
+#!/usr/bin/env python3
 
 def main(raw_args):
     import os
@@ -24,7 +23,6 @@ def main(raw_args):
 
     patches = [
         '%s/sdks/builds/fix-emscripten-8511.diff' % mono_source_root,
-        '%s/sdks/builds/emscripten-pr-8457.diff' % mono_source_root
     ]
 
     from subprocess import Popen
